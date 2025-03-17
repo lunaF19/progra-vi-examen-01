@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations; 
 
 namespace EventosFranciscoLuna.Models
 {
+    [Table("Reservas")]
     public class Reserva
     {
         [Key]
@@ -21,7 +18,7 @@ namespace EventosFranciscoLuna.Models
         public string Contacto { get; set; }
         
         // Relación con Evento
-        [ForeignKey("IdEvento")]
+        [ForeignKey("Evento")]
         public int IdEvento { get; set; }
         public Evento Evento { get; set; }
 

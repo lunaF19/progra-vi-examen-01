@@ -2,8 +2,9 @@
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using EventosFranciscoLuna.Data;
 using Microsoft.Ajax.Utilities;
+using EventosFranciscoLuna.Data;
+using EventosFranciscoLuna.Models;
 
 namespace EventosFranciscoLuna.Controllers
 {
@@ -23,23 +24,29 @@ namespace EventosFranciscoLuna.Controllers
             return View(await _context.EventosSet.ToListAsync());
         }
 
+
         // GET: Evento/Edit/5
         [HttpGet]
         public async Task<ActionResult> Edit(int id = 0)
         {
-            ViewBag.IdSalon = new SelectList(_context.SalonesSet, "IdSalon", "Nombre");
+            
+
+            // Va a crear un nuevo registro
             if (id == 0)
             {
+                ViewBag.ListSalones = new SelectList(_context.SalonesSet, "IdSalon", "Nombre", 0);
                 Models.Evento _evento = new Models.Evento();
                 return View(_evento);
             }
 
+            // Busca el registro por PK
             var evento = await _context.EventosSet.FindAsync(id);
 
             if (evento == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.ListSalones = new SelectList(_context.SalonesSet, "IdSalon", "Nombre", evento.IdSalon);
             return View(evento);
         }
 
@@ -49,13 +56,17 @@ namespace EventosFranciscoLuna.Controllers
         public async Task<ActionResult> Create([Bind(Include = "IdEvento, Nombre, Fecha, HoraInicio, HoraFin, IdSalon ")] Models.Evento evento)
         {
 
+            // Verifica si el modelo es válido
             if (!ModelState.IsValid)
             {
                 return View(evento);
             }
 
+            // Agrega el nuevo registro
             _context.EventosSet.Add(evento);
+            // Salva cambios
             _context.SaveChanges();
+            // Redirige a Index
             return RedirectToAction("Index");
         }
 
@@ -65,16 +76,19 @@ namespace EventosFranciscoLuna.Controllers
         public async Task<ActionResult> Edit([Bind(Include = "IdEvento, Nombre, Fecha, HoraInicio, HoraFin, IdSalon ")] Models.Evento evento)
         {
 
-            if (evento.IdEvento.ToString().Trim().IsNullOrWhiteSpace())
-            {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
-            }
-
+            // Valida Modelo
             if (!ModelState.IsValid)
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
+            // Valida la PK
+            if (evento.IdEvento.ToString().Trim().IsNullOrWhiteSpace() || evento.IdEvento == 0)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            // Busca datos del registro
             var _evento = await _context.EventosSet.FindAsync(evento.IdEvento);
 
             if (_evento == null)
@@ -83,41 +97,46 @@ namespace EventosFranciscoLuna.Controllers
                 _context.EventosSet.Add(evento);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
-
             }
-            else
-            {
-                _evento.IdEvento = evento.IdEvento;
-                _evento.Nombre = evento.Nombre;
-                _evento.Fecha = evento.Fecha;
-                _evento.HoraInicio = evento.HoraInicio;
-                _evento.HoraFin = evento.HoraFin;
-                _evento.IdSalon = evento.IdSalon;
+           
+            // Setea los nuevos datos en el registro
+            _evento.IdEvento = evento.IdEvento;
+            _evento.Nombre = evento.Nombre;
+            _evento.Fecha = evento.Fecha;
+            _evento.HoraInicio = evento.HoraInicio;
+            _evento.HoraFin = evento.HoraFin;
+            _evento.IdSalon = evento.IdSalon;
 
-                _context.EventosSet.AddOrUpdate(evento);
-                _context.SaveChanges();
+            // Actualiza
+            _context.EventosSet.AddOrUpdate(evento);
 
-                return RedirectToAction("Index");
-            }
+            // Aplica cambios
+            _context.SaveChanges();
 
-        }
-
+            return RedirectToAction("Index");
+        } 
 
         // GET: Evento/Delete?code=5
-        public async Task<ActionResult> Delete(string code)
+        public async Task<ActionResult> Delete(int id=0)
         {
 
-            if (code == null)
+            // Valida la PK
+            if (id.ToString().Trim().IsNullOrWhiteSpace() || id == 0)
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            var evento = await _context.EventosSet.FindAsync(code);
+
+            // Busca el registro
+            var evento = await _context.EventosSet.FindAsync(id);
             if (evento == null)
             {
                 return HttpNotFound();
             }
 
+            // Remueve el registro
             _context.EventosSet.Remove(evento);
+
+            // Aplica los cambios
             _context.SaveChanges();
             return View();
 

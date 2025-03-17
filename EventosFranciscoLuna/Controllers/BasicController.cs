@@ -1,28 +1,34 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using EventosFranciscoLuna.Data;
 
 namespace EventosFranciscoLuna.Controllers
 {
-    class SalonController : Controller
+    public class BasicController : Controller
     {
+
         private readonly ApplicationDbContext _context;
 
-        public SalonController()
+        public BasicController()
         {
             _context = new ApplicationDbContext();
         }
 
-        // GET: Salon
+        // GET: Basic
         public async Task<ActionResult> Index()
         {
             return View(await _context.SalonesSet.ToListAsync());
         }
 
         // GET: Salon/Details/5
-        public async Task<ActionResult> Details(int id =0)
+        public async Task<ActionResult> Details(int id = 0)
         {
             if (id == 0)
             {
@@ -47,24 +53,24 @@ namespace EventosFranciscoLuna.Controllers
         // POST: Salon/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IdSalon,Nombre,Capacidad,Ubicacion")] Models.Salon salon)
+        public async Task<ActionResult> Create([Bind(Include = "Nombre,Capacidad,Ubicacion")] Models.Salon salon)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.SalonesSet.Add(salon);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View(salon);
             }
 
-            return View(salon);
+            _context.SalonesSet.Add(salon);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: Salon/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Edit(int id=0)
         {
-            if (id == null)
+            if (id == 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return View(new Models.Salon());
             }
 
             var salon = await _context.SalonesSet.FindAsync(id);

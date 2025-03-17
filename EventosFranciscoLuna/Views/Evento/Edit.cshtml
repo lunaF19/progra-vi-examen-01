@@ -1,57 +1,74 @@
 ﻿﻿@model EventosFranciscoLuna.Models.Evento
 
 @{
-    ViewData["Title"] = Model?.IdEvento == null ? "Crear Evento" : "Editar Evento";
+    ViewData["Title"] = Model?.IdEvento == 0 ? "Crear Evento" : "Editar Evento";
 }
 
-<h2>@ViewData["Title"]</h2>
-<form asp-action="@(Model?.IdEvento == null ? "Create" : "Edit")" method="post">
-    @Html.AntiForgeryToken()
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">@ViewData["Title"]</h5>
 
-    <div class="form-group">
-        <label asp-for="IdEvento" class="control-label">Código</label>
-        @Html.TextBoxFor(model => model.IdEvento, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.IdEvento, "", new { @class = "text-danger" })
+                    <form asp-action="@(Model?.IdEvento == 0 ? "Create" : "Edit")" method="post">
+                        @Html.AntiForgeryToken()
+                        @if (Model?.IdEvento > 0)
+                        {
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(model => model.IdEvento, new { @class = "form-control", @type = "number", @readonly = "readonly", @placeholder = "ID del Evento" })
+                                @Html.LabelFor(model => model.IdEvento)
+                                @Html.ValidationMessageFor(model => model.IdEvento, "", new { @class = "text-danger" })
+                            </div>
+                        }
+
+                        <div class="form-floating mb-3">
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre del Evento" })
+                            @Html.LabelFor(model => model.Nombre)
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.DropDownListFor(model => model.IdSalon,
+                                ViewBag.ListSalones as SelectList,
+                                "Seleccionar Salón",
+                                new { @value = Model.IdSalon, @class = "form-select"})
+                            @Html.LabelFor(model => model.IdSalon, new { @class = "" })
+                            @Html.ValidationMessageFor(model => model.IdSalon, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="Fecha" name="Fecha" type="datetime-local" value="@Model.Fecha.ToString("yyyy-MM-ddTHH:mm")" placeholder="Fecha del Evento">
+                            <label for="Fecha">Fecha del Evento</label>
+                            @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="HoraInicio" name="HoraInicio" type="time" value="@Model.HoraInicio" placeholder="Hora de Inicio">
+                            <label for="HoraInicio">Hora de Inicio</label>
+                            @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="HoraFin" name="HoraFin" type="time" value="@Model.HoraFin" placeholder="Hora de Fin">
+                            <label for="HoraFin">Hora de Fin</label>
+                            @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-custom text-white">
+                                <i class="bi bi-save me-1"></i>Guardar
+                            </button>
+                            <a href="@Url.Action("Index", "Evento")" class="btn btn-warning text-white">
+                                <i class="bi bi-x-circle me-1"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Nombre" class="control-label">Nombre</label>
-        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        <label asp-for="IdSalon" class="control-label">IdSalon</label>
-        @Html.TextBoxFor(model => model.IdSalon, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.IdSalon, "", new { @class = "text-danger" })
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Fecha, new { @class = "" })
-        <input class="form-control" id="Fecha" name="Fecha" type="datetime-local" value="@Model.Fecha.ToString("yyyy-MM-ddTHH:mm")">
-        @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.HoraInicio, new { @class = "" })
-        <input class="form-control" id="HoraInicio" name="HoraInicio" type="time" value="@Model.HoraInicio">
-        @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.HoraFin, new { @class = "" })
-        <input class="form-control" id="HoraInicio" name="HoraFin" type="time" value="@Model.HoraFin">
-        @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
-    </div> 
-
-    <div class="form-group mt-3">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <button class="btn btn-outline-primary">@Html.ActionLink("Cancelar", "Index", new { code = "" })</button>
-    </div>
-
-</form>
+</main>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

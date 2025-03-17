@@ -2,46 +2,57 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 @model IEnumerable<EventosFranciscoLuna.Models.Evento>
 @{
     ViewBag.Title = "Eventos";
-
 }
 
 @Html.AntiForgeryToken()
-<h2>Eventos</h2>
-<p>@Html.ActionLink("Crear Evento", "Edit", new { code = "" })</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IdEvento)
-            @Html.DisplayNameFor(model => model.Nombre)
-            @Html.DisplayNameFor(model => model.Fecha)
-            @Html.DisplayNameFor(model => model.HoraInicio)
-            @Html.DisplayNameFor(model => model.HoraFin)
-            @Html.DisplayNameFor(model => model.IdSalon)
-        </th>
-    </tr>
+<header class="d-flex justify-content-between" >
+    <h2>Eventos</h2>
+    @Html.ActionLink("Crear Nuevo Evento", "Edit", new { code = "" }, new {@class= "btn btn-primary" })
+</header>
+<main>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.IdEvento)</th>
+                <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+                <th>@Html.DisplayNameFor(m => m.Fecha)</th>
+                <th>@Html.DisplayNameFor(m => m.HoraInicio)</th>
+                <th>@Html.DisplayNameFor(m => m.HoraFin)</th>
+                <th>@Html.DisplayNameFor(m => m.IdSalon)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.IdEvento)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                    <td>@Html.DisplayFor(modelItem => item.HoraInicio)</td>
+                    <td>@Html.DisplayFor(modelItem => item.HoraFin)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IdSalon)</td>
 
-    @foreach (var item in Model)
-    {
-        @Html.AntiForgeryToken()
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdEvento)
-                @Html.DisplayFor(modelItem => item.Nombre)
-                @Html.DisplayFor(modelItem => item.Fecha)
-                @Html.DisplayFor(modelItem => item.HoraInicio)
-                @Html.DisplayFor(modelItem => item.HoraFin)
-                @Html.DisplayFor(modelItem => item.IdSalon)
-                
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.IdEvento }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdEvento })
-            </td>
-        </tr>
-    }
+                    <td>
+                        <div class="d-flex justify-content-around">
+                            <a href="@Url.Action("Edit", "Evento", new { id = item.IdEvento })"
+                               class="btn btn-primary">
+                                Editar
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
 
-</table>
+                            <a href="@Url.Action("Delete", "Evento", new { id = item.IdEvento })"
+                               class="btn btn-danger">
+                                Eliminar
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

@@ -1,0 +1,40 @@
+﻿﻿@model EventosFranciscoLuna.Models.Salon
+
+@{
+    ViewData["Title"] = Model?.IdSalon == null ? "Crear Salon" : "Editar Salon";
+}
+
+<h2>@ViewData["Title"]</h2>
+<form asp-action="@(Model?.IdSalon == null ? "Create" : "Edit")" method="post">
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.IdSalon, new { @class = "form-control" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nombre, new { @class = "" })
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Capacidad, new { @class = "" })
+        @Html.TextBoxFor(model => model.Capacidad, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Capacidad, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Ubicacion, new { @class = "" })
+        @Html.TextBoxFor(model => model.Ubicacion, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Ubicacion, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button class="btn btn-outline-primary">@Html.ActionLink("Cancelar", "Index", new { code = "" })</button>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,42 @@
+﻿﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<EventosFranciscoLuna.Models.Reserva>
+@{
+    ViewBag.Title = "Reservas";
+}
+
+@Html.AntiForgeryToken()
+<h2>Reservas</h2>
+<p>@Html.ActionLink("Crear Reserva", "Edit", new { code = "" })</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdReserva)
+            @Html.DisplayNameFor(model => model.NombreCliente)
+            @Html.DisplayNameFor(model => model.Contacto)
+            @Html.DisplayNameFor(model => model.IdEvento)
+        </th>
+        <th>
+            Acciones
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdReserva)
+                @Html.DisplayFor(modelItem => item.NombreCliente)
+                @Html.DisplayFor(modelItem => item.Contacto)
+                @Html.DisplayFor(modelItem => item.IdEvento)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdReserva }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdReserva })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,43 @@
+﻿﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<EventosFranciscoLuna.Models.Salon>
+@{
+    ViewBag.Title = "Eventos";
+}
+
+@Html.AntiForgeryToken()
+<h2>Salones</h2>
+<p>@Html.ActionLink("Crear Salon", "Edit", new { code = "" })</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdSalon)
+            @Html.DisplayNameFor(model => model.Nombre)
+            @Html.DisplayNameFor(model => model.Capacidad)
+            @Html.DisplayNameFor(model => model.Ubicacion)
+        </th>
+        <th>
+            Acciones
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSalon)
+                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Capacidad)
+                @Html.DisplayFor(modelItem => item.Ubicacion)
+
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.IdSalon }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdSalon })
+            </td>
+        </tr>
+    }
+
+</table>

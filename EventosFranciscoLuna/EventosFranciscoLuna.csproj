@@ -167,6 +167,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservaController.cs" />
@@ -177,7 +178,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Evento.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Reserva.cs" />
     <Compile Include="Models\Salon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -249,11 +249,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Evento\Index.cshtml" />
     <Content Include="Views\Evento\Edit.cshtml" />
+    <Content Include="Views\Reserva\Index.cshtml" />
+    <Content Include="Views\Reserva\Edit.cshtml" />
+    <Content Include="Views\Basic\Index.cshtml" />
+    <Content Include="Views\Basic\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Reserva\" />
-    <Folder Include="Views\Salon\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

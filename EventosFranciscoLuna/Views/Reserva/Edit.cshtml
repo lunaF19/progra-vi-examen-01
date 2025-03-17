@@ -1,0 +1,49 @@
+﻿﻿@model EventosFranciscoLuna.Models.Reserva
+
+@{
+    ViewData["Title"] = Model?.IdReserva == null ? "Crear Reserva" : "Editar Reserva";
+}
+
+<h2>@ViewData["Title"]</h2>
+<form asp-action="@(Model?.IdReserva == null ? "Create" : "Edit")" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IdReserva, new { @class = "" })
+        @Html.TextBoxFor(model => model.IdReserva, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.IdReserva, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NombreCliente, new { @class = "" })
+        @Html.TextBoxFor(model => model.NombreCliente, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.NombreCliente, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contacto, new { @class = "" })
+        @Html.TextBoxFor(model => model.Contacto, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Contacto, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IdEvento)
+        @Html.DropDownListFor(model => model.IdEvento, new SelectList(ViewBag.Eventos, "IdEvento", "Nombre"), "Seleccionar Evento ", new { @class = "form-control" })
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.IdEvento, new { @class = "" })
+            @Html.TextBoxFor(model => model.IdEvento, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IdEvento, "", new { @class = "text-danger" })
+        </div>*@
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button class="btn btn-outline-primary">@Html.ActionLink("Cancelar", "Index", new { code = "" })</button>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
